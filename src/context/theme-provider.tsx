@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState, useMemo } from 'react'
-import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
+import { removeCookie } from '@/lib/cookies'
 
 type Theme = 'dark' | 'light' | 'system'
 type ResolvedTheme = Exclude<Theme, 'system'>
 
 const DEFAULT_THEME = 'light'
 const THEME_COOKIE_NAME = 'vite-ui-theme'
-const THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -54,7 +53,7 @@ export function ThemeProvider({
     root.classList.add('light')
   }, [])
 
-  const setTheme = (theme: Theme) => {
+  const setTheme = (_theme: Theme) => {
     // Ignore theme changes, always keep light
     _setTheme('light')
   }
