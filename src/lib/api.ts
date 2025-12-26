@@ -2,7 +2,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { useAuthStore } from '@/stores/auth-store'
 
 // Get API base URL from environment variable, default to localhost:3000
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://webhook-pulse-api-production.up.railway.app'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://webhook-pulse-api.onrender.com'
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
