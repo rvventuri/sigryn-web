@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { destinationsApi } from '@/lib/destinations-api'
+import { endpointsApi } from '@/lib/endpoints-api'
 import { type Destination } from '../data/schema'
 
 type DestinationDeleteDialogProps = {
@@ -29,16 +30,29 @@ export function DestinationsDeleteDialog({
     if (value.trim() !== currentRow.name) return
 
     try {
+      // Delete all endpoints first
+      try {
+        const endpoints = await endpointsApi.getAll(currentRow.id)
+        for (const endpoint of endpoints) {
+          await endpointsApi.delete(currentRow.id, endpoint.id)
+        }
+      } catch (error) {
+        // If endpoints don't exist or already deleted, continue
+        console.log('No endpoints to delete or already deleted')
+      }
+
+      // Then delete destination
       await destinationsApi.delete(currentRow.id)
-      toast.success('Destination deleted successfully')
+      toast.success('Destination and endpoint deleted successfully')
       
       // Invalidate and refetch destinations
       await queryClient.invalidateQueries({ queryKey: ['destinations'] })
+      await queryClient.invalidateQueries({ queryKey: ['endpoints', currentRow.id] })
       
       onOpenChange(false)
       setValue('')
     } catch (error) {
-      toast.error('Failed to delete destination')
+      toast.error('Failed to delete destination and endpoint')
       console.error(error)
     }
   }
@@ -64,7 +78,7 @@ export function DestinationsDeleteDialog({
             Are you sure you want to delete{' '}
             <span className='font-bold'>{currentRow.name}</span>?
             <br />
-            This action will permanently remove this destination from the system.
+            This action will permanently remove this destination and its associated endpoint from the system.
             This cannot be undone.
           </p>
 

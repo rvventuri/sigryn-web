@@ -1,4 +1,4 @@
-import { DestinationsActionDialog } from './destinations-action-dialog'
+import { DestinationEndpointActionDialog } from './destination-endpoint-action-dialog'
 import { DestinationsDeleteDialog } from './destinations-delete-dialog'
 import { useDestinations } from './destinations-provider'
 
@@ -6,7 +6,7 @@ export function DestinationsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useDestinations()
   return (
     <>
-      <DestinationsActionDialog
+      <DestinationEndpointActionDialog
         key='destination-add'
         open={open === 'add'}
         onOpenChange={(state) => {
@@ -16,7 +16,7 @@ export function DestinationsDialogs() {
 
       {currentRow && (
         <>
-          <DestinationsActionDialog
+          <DestinationEndpointActionDialog
             key={`destination-edit-${currentRow.id}`}
             open={open === 'edit'}
             onOpenChange={(state) => {

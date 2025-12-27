@@ -1,6 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { Link } from '@tanstack/react-router'
-import { Settings, BarChart3 } from 'lucide-react'
+import { BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -148,15 +148,6 @@ export const destinationsColumns: ColumnDef<Destination>[] = [
             <Button variant='ghost' size='sm' className='space-x-1'>
               <BarChart3 className='h-4 w-4' />
               <span>Dashboard</span>
-            </Button>
-          </Link>
-          <Link
-            to='/destinations/$destinationId/endpoints'
-            params={{ destinationId: destination.id }}
-          >
-            <Button variant='ghost' size='sm' className='space-x-1'>
-              <Settings className='h-4 w-4' />
-              <span>Endpoints</span>
             </Button>
           </Link>
         </div>
