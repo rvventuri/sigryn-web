@@ -13,6 +13,9 @@ export function Navbar() {
           <span className='text-xl font-bold'>Sigryn</span>
         </Link>
         <div className='flex items-center gap-4'>
+          <Link to={'/blog' as any}>
+            <Button variant='ghost'>Blog</Button>
+          </Link>
           <Link to='/sign-in'>
             <Button variant='ghost'>Sign In</Button>
           </Link>
