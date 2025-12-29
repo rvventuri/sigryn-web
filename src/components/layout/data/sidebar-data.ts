@@ -4,6 +4,7 @@ import {
   Command,
   GalleryVerticalEnd,
   Send,
+  CreditCard,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -43,6 +44,11 @@ export const sidebarData: SidebarData = {
           title: 'Destinations',
           url: '/destinations',
           icon: Send,
+        },
+        {
+          title: 'Plans',
+          url: '/plans',
+          icon: CreditCard,
         },
         // {
         //   title: 'Settings',

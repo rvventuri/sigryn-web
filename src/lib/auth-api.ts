@@ -27,6 +27,10 @@ export interface LoginRequest {
   password: string
 }
 
+export interface GoogleAuthRequest {
+  credential: string
+}
+
 export interface ApiError {
   statusCode: number
   message: string
@@ -56,6 +60,14 @@ export const authApi = {
    */
   async getMe(): Promise<User> {
     const response = await api.get<User>('/auth/me')
+    return response.data
+  },
+
+  /**
+   * Login or register with Google
+   */
+  async googleAuth(data: GoogleAuthRequest): Promise<LoginResponse> {
+    const response = await api.post<LoginResponse>('/auth/google', data)
     return response.data
   },
 }

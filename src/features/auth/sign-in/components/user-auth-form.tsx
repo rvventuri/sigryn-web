@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { GoogleAuthButton } from '@/components/google-auth-button'
+import { Separator } from '@/components/ui/separator'
 
 const formSchema = z.object({
   email: z.email({
@@ -84,49 +86,64 @@ export function UserAuthForm({
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={cn('grid gap-3', className)}
-        {...props}
-      >
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder='name@example.com' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='password'
-          render={({ field }) => (
-            <FormItem className='relative'>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder='********' {...field} />
-              </FormControl>
-              <FormMessage />
-              <Link
-                to='/forgot-password'
-                className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
-              >
-                Forgot password?
-              </Link>
-            </FormItem>
-          )}
-        />
-        <Button className='mt-2' disabled={isLoading}>
-          {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
-          Sign in
-        </Button>
-      </form>
-    </Form>
+    <div className={cn('space-y-4', className)}>
+      <GoogleAuthButton mode='signin' redirectTo={redirectTo} className='w-full' />
+      
+      <div className='relative'>
+        <div className='absolute inset-0 flex items-center'>
+          <Separator />
+        </div>
+        <div className='relative flex justify-center text-xs uppercase'>
+          <span className='bg-background px-2 text-muted-foreground'>
+            Or continue with
+          </span>
+        </div>
+      </div>
+
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='grid gap-3'
+          {...props}
+        >
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder='name@example.com' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem className='relative'>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <PasswordInput placeholder='********' {...field} />
+                </FormControl>
+                <FormMessage />
+                <Link
+                  to='/forgot-password'
+                  className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
+                >
+                  Forgot password?
+                </Link>
+              </FormItem>
+            )}
+          />
+          <Button className='mt-2' disabled={isLoading}>
+            {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
+            Sign in
+          </Button>
+        </form>
+      </Form>
+    </div>
   )
 }
