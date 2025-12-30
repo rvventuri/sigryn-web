@@ -15,11 +15,27 @@ export function Hero() {
 
       <div className='container relative z-10 px-4'>
         <div className='mx-auto max-w-4xl text-center'>
-          {/* Badge */}
-          <div className='mb-8 inline-flex items-center gap-2 rounded-full border bg-muted/50 px-4 py-2 text-sm'>
-            <span className='font-medium text-muted-foreground'>
-              Trusted by great teams around the world
-            </span>
+          {/* Badges */}
+          <div className='mb-8 flex flex-col items-center gap-4'>
+            <div className='inline-flex items-center gap-2 rounded-full border bg-muted/50 px-4 py-2 text-sm'>
+              <span className='font-medium text-muted-foreground'>
+                Trusted by great teams around the world
+              </span>
+            </div>
+            <a
+              href='https://www.producthunt.com/products/sigryn?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-sigryn'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='transition-opacity hover:opacity-80'
+            >
+              <img
+                alt='Sigryn - Never lose a webhook again | Product Hunt'
+                width='250'
+                height='54'
+                src='https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1055854&theme=light&t=1767059159536'
+                className='h-auto w-[250px]'
+              />
+            </a>
           </div>
 
           {/* Main headline */}
