@@ -9,7 +9,6 @@ import { LeadDialog } from './lead-dialog'
 type Plan = {
   id: 'free' | 'basic' | 'pro'
   name: string
-  emoji: string
   price: string
   features: string[]
   color: 'default' | 'blue' | 'purple'
@@ -59,7 +58,6 @@ function PlanCard({
       )}
 
       <CardHeader className='text-center pb-8'>
-        <div className='mb-4 text-4xl'>{plan.emoji}</div>
         <CardTitle className='text-2xl mb-2'>{plan.name}</CardTitle>
         <div className='mt-6'>
           <span className='text-4xl font-bold'>{plan.price}</span>
@@ -93,7 +91,6 @@ const plans: Plan[] = [
   {
     id: 'free',
     name: 'Sigryn Free',
-    emoji: '🆓',
     price: 'Free',
     color: 'default',
     features: [
@@ -108,7 +105,6 @@ const plans: Plan[] = [
   {
     id: 'basic',
     name: 'Sigryn Basic',
-    emoji: '🟦',
     price: 'Custom',
     color: 'blue',
     popular: true,
@@ -124,7 +120,6 @@ const plans: Plan[] = [
   {
     id: 'pro',
     name: 'Sigryn Pro',
-    emoji: '🟪',
     price: 'Custom',
     color: 'purple',
     features: [
