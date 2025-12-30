@@ -29,11 +29,13 @@ export function Hero() {
               className='transition-opacity hover:opacity-80'
             >
               <img
-                alt='Sigryn - Never lose a webhook again | Product Hunt'
+                alt='Sigryn featured on Product Hunt - Never lose a webhook again'
                 width='250'
                 height='54'
                 src='https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1055854&theme=light&t=1767059159536'
                 className='h-auto w-[250px]'
+                loading='lazy'
+                decoding='async'
               />
             </a>
           </div>
@@ -51,6 +53,16 @@ export function Hero() {
           <p className='mb-10 text-lg text-muted-foreground sm:text-xl lg:text-2xl'>
             The control layer for reliable event delivery. Sigryn processes signals, validates signatures, and guarantees every event reaches its destination with complete visibility and enterprise-grade reliability.
           </p>
+          
+          {/* SEO: Hidden descriptive text for search engines */}
+          <div className='sr-only'>
+            <p>
+              Sigryn is a webhook infrastructure platform that provides reliable event delivery, 
+              webhook queueing, automatic retries, signature validation, multi-destination routing, 
+              real-time monitoring, and event replay capabilities. Perfect for developers building 
+              event-driven applications, API integrations, and webhook-based systems.
+            </p>
+          </div>
 
           {/* CTA Buttons */}
           <div className='mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row'>

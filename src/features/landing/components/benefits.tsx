@@ -91,14 +91,14 @@ export function Benefits() {
     <section className='py-24 sm:py-32 bg-muted/30'>
       <div className='container px-4'>
         {/* Benefits Section */}
-        <div className='mx-auto max-w-2xl text-center mb-16'>
+        <header className='mx-auto max-w-2xl text-center mb-16'>
           <h2 className='text-4xl font-bold tracking-tight sm:text-5xl'>
             Works the way{' '}
             <span className='bg-gradient-to-r from-primary to-green-500 bg-clip-text text-transparent italic'>
               you build
             </span>
           </h2>
-        </div>
+        </header>
 
         <div className='grid gap-8 md:grid-cols-2 mb-24'>
           {benefits.map((benefit, index) => {
@@ -147,7 +147,7 @@ export function Benefits() {
         </div>
 
         {/* Use Cases Section */}
-        <div className='mx-auto max-w-2xl text-center mb-12'>
+        <header className='mx-auto max-w-2xl text-center mb-12'>
           <h3 className='text-3xl font-bold tracking-tight sm:text-4xl'>
             Built for{' '}
             <span className='bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent italic'>
@@ -157,7 +157,7 @@ export function Benefits() {
           <p className='mt-4 text-lg text-muted-foreground'>
             From ingesting signals from third-party services to delivering outbound events with verified signatures, Sigryn provides your team with the infrastructure, reliability, and control essential for building mission-critical event-driven systems.
           </p>
-        </div>
+        </header>
 
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-4'>
           {useCases.map((useCase, index) => (

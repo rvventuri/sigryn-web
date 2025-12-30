@@ -136,14 +136,14 @@ export function SocialProof() {
         </div>
 
         {/* Testimonials Header */}
-        <div className='mx-auto max-w-2xl text-center mb-12'>
+        <header className='mx-auto max-w-2xl text-center mb-12'>
           <h2 className='text-4xl font-bold tracking-tight sm:text-5xl'>
             Trusted by engineering teams{' '}
             <span className='bg-gradient-to-r from-primary to-pink-500 bg-clip-text text-transparent italic'>
               worldwide
             </span>
           </h2>
-        </div>
+        </header>
 
         {/* Testimonials Grid */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -171,7 +171,11 @@ export function SocialProof() {
                 {/* Author */}
                 <div className='flex items-center gap-3'>
                   <Avatar>
-                    <AvatarImage src={testimonial.image} />
+                    <AvatarImage
+                      src={testimonial.image}
+                      alt={`${testimonial.name} avatar`}
+                      loading='lazy'
+                    />
                     <AvatarFallback>
                       {testimonial.name
                         .split(' ')

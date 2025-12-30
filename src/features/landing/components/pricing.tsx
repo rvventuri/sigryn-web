@@ -74,7 +74,7 @@ export function Pricing() {
     <section className='py-24 sm:py-32 bg-muted/30'>
       <div className='container px-4'>
         {/* Header */}
-        <div className='mx-auto max-w-2xl text-center mb-16'>
+        <header className='mx-auto max-w-2xl text-center mb-16'>
           <h2 className='text-4xl font-bold tracking-tight sm:text-5xl'>
             Simple, Transparent
             <span className='block bg-gradient-to-r from-primary to-green-500 bg-clip-text text-transparent'>
@@ -84,7 +84,7 @@ export function Pricing() {
           <p className='mt-6 text-lg text-muted-foreground'>
             Start free, scale as you grow. No hidden fees, no surprises.
           </p>
-        </div>
+        </header>
 
         {/* Pricing Cards */}
         <div className='grid gap-8 md:grid-cols-3 lg:max-w-6xl lg:mx-auto'>

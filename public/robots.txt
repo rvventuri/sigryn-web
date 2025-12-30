@@ -1,0 +1,20 @@
+# robots.txt for Sigryn
+# https://sigryn.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /_authenticated/
+Disallow: /clerk/
+Disallow: /sign-in
+Disallow: /sign-up
+
+# Allow public pages
+Allow: /
+Allow: /blog
+Allow: /blog/*
+
+# Sitemap location
+Sitemap: https://sigryn.com/sitemap.xml
+

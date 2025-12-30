@@ -113,7 +113,7 @@ export function Features() {
         </div>
 
         {/* Section Header */}
-        <div className='mx-auto max-w-2xl text-center mb-16'>
+        <header className='mx-auto max-w-2xl text-center mb-16'>
           <h2 className='text-4xl font-bold tracking-tight sm:text-5xl'>
             Complete infrastructure for{' '}
             <span className='block bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent italic'>
@@ -123,7 +123,7 @@ export function Features() {
           <p className='mt-6 text-lg text-muted-foreground'>
             Sigryn offers comprehensive event infrastructure that handles the entire lifecycle of external signals — from initial ingestion and signature validation through guaranteed delivery to full observability.
           </p>
-        </div>
+        </header>
 
         {/* Features Grid */}
         <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4'>
