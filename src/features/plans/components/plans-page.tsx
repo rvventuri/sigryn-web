@@ -1,23 +1,26 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Check, Loader2 } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { plansApi, type Plan as ApiPlan } from '@/lib/plans-api'
-import { subscriptionsApi } from '@/lib/subscriptions-api'
-import { destinationsApi } from '@/lib/destinations-api'
 import { toast } from 'sonner'
-import { plans as localPlans, type Plan as LocalPlan } from '../data/plans'
 import { LeadDialog } from './lead-dialog'
+
+type Plan = {
+  id: 'free' | 'basic' | 'pro'
+  name: string
+  emoji: string
+  price: string
+  features: string[]
+  color: 'default' | 'blue' | 'purple'
+  popular?: boolean
+}
 
 function PlanCard({ 
   plan, 
-  isCurrentPlan,
   onSubscribe
 }: { 
-  plan: LocalPlan
-  isCurrentPlan?: boolean
+  plan: Plan
   onSubscribe: () => void
 }) {
   const handleSubscribe = () => {
@@ -28,17 +31,12 @@ function PlanCard({
     onSubscribe()
   }
 
-  const formatPrice = (price: number) => {
-    if (price === 0) return 'Free'
-    return `$${price.toFixed(2)}`
-  }
-
   const getColorClasses = (color: string) => {
     switch (color) {
       case 'blue':
-        return 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/20'
+        return 'border-blue-500 bg-blue-50/50'
       case 'purple':
-        return 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/20'
+        return 'border-purple-500 bg-purple-50/50'
       default:
         return 'border-border'
     }
@@ -61,15 +59,10 @@ function PlanCard({
       )}
 
       <CardHeader className='text-center pb-8'>
+        <div className='mb-4 text-4xl'>{plan.emoji}</div>
         <CardTitle className='text-2xl mb-2'>{plan.name}</CardTitle>
-        <p className='text-sm text-muted-foreground mb-6'>
-          {plan.description}
-        </p>
         <div className='mt-6'>
-          <span className='text-4xl font-bold'>{formatPrice(plan.price)}</span>
-          {plan.price > 0 && (
-            <span className='text-muted-foreground'> /month</span>
-          )}
+          <span className='text-4xl font-bold'>{plan.price}</span>
         </div>
       </CardHeader>
 
@@ -88,99 +81,72 @@ function PlanCard({
           variant={plan.popular ? 'default' : 'outline'}
           size='lg'
           onClick={handleSubscribe}
-          disabled={isCurrentPlan}
         >
-          {isCurrentPlan ? (
-            'Current Plan'
-          ) : (
-            `Get Started with ${plan.name}`
-          )}
+          {plan.id === 'free' ? 'Current Plan' : 'Subscribe'}
         </Button>
       </CardContent>
     </Card>
   )
 }
 
+const plans: Plan[] = [
+  {
+    id: 'free',
+    name: 'Sigryn Free',
+    emoji: '🆓',
+    price: 'Free',
+    color: 'default',
+    features: [
+      'Up to 2 destinations',
+      '1,000 events / month',
+      '7-day event history',
+      'Manual retry',
+      'Full payload & headers visibility',
+      'Basic webhook monitoring',
+    ],
+  },
+  {
+    id: 'basic',
+    name: 'Sigryn Basic',
+    emoji: '🟦',
+    price: 'Custom',
+    color: 'blue',
+    popular: true,
+    features: [
+      'Up to 5 destinations',
+      '50,000 events / month',
+      '30-day event history',
+      'Manual retry & replay',
+      'Full event timeline',
+      'Production-ready dashboard',
+    ],
+  },
+  {
+    id: 'pro',
+    name: 'Sigryn Pro',
+    emoji: '🟪',
+    price: 'Custom',
+    color: 'purple',
+    features: [
+      'Unlimited destinations',
+      '500,000 events / month',
+      '90-day event history',
+      'Automatic retries with backoff',
+      'Manual & automated replay',
+      'Alerts (Slack & Email)',
+      'Webhook health metrics',
+    ],
+  },
+]
+
 export function PlansPage() {
-  const [selectedPlan, setSelectedPlan] = useState<LocalPlan | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null)
   const [leadDialogOpen, setLeadDialogOpen] = useState(false)
 
-  // Fetch plans from API
-  const { data: apiPlans = [], isLoading: plansLoading } = useQuery({
-    queryKey: ['plans'],
-    queryFn: () => plansApi.getAll(),
-  })
-
-  // Get organizationId from destinations
-  const { data: destinations = [] } = useQuery({
-    queryKey: ['destinations'],
-    queryFn: () => destinationsApi.getAll(),
-  })
-
-  const organizationId = destinations.length > 0 ? destinations[0].organizationId : ''
-
-  // Fetch current subscription
-  const { data: currentSubscription } = useQuery({
-    queryKey: ['subscription', organizationId],
-    queryFn: () => subscriptionsApi.getByOrganization(organizationId),
-    enabled: !!organizationId,
-  })
-
-  const handlePlanSelect = (plan: LocalPlan) => {
+  const handlePlanSelect = (plan: Plan) => {
     setSelectedPlan(plan)
     setLeadDialogOpen(true)
   }
-
-  // Map API plans to local plans for display
-  const getLocalPlan = (apiPlan: ApiPlan): LocalPlan | undefined => {
-    return localPlans.find((p) => p.priceId === apiPlan.stripePriceId)
-  }
-
-  // Determine current plan
-  const currentPlanType = currentSubscription?.plan?.planType || 'free'
-  const isCurrentPlan = (planId: string) => {
-    if (!currentSubscription?.plan) return planId === 'free'
-    if (planId === 'free' && currentPlanType === 'free') return true
-    if (planId === 'basic' && currentPlanType === 'production') return true
-    if (planId === 'pro' && currentPlanType === 'advanced') return true
-    return false
-  }
-
-  // Use API plans if available, fallback to local plans
-  const displayPlans = apiPlans.length > 0 
-    ? apiPlans.map((apiPlan) => {
-        const localPlan = getLocalPlan(apiPlan)
-        // If we have a matching local plan, use its features, otherwise create a basic one
-        if (localPlan) {
-          return {
-            apiPlan,
-            localPlan: {
-              ...localPlan,
-              price: apiPlan.amount, // Use price from API
-              name: apiPlan.name, // Use name from API
-              description: apiPlan.description, // Use description from API
-            }
-          }
-        }
-        // Fallback: create plan from API data
-        const planId: 'free' | 'basic' | 'pro' = apiPlan.planType === 'free' ? 'free' : apiPlan.planType === 'production' ? 'basic' : 'pro'
-        const fallbackLocalPlan = localPlans.find(p => p.id === planId) || localPlans[0]
-        return {
-          apiPlan,
-          localPlan: {
-            ...fallbackLocalPlan,
-            id: planId as 'free' | 'basic' | 'pro',
-            name: apiPlan.name,
-            description: apiPlan.description,
-            price: apiPlan.amount,
-            priceId: apiPlan.stripePriceId,
-            currency: apiPlan.currency,
-            color: apiPlan.planType === 'production' ? 'blue' : apiPlan.planType === 'advanced' ? 'purple' : 'default',
-            popular: apiPlan.planType === 'production',
-          } as LocalPlan
-        }
-      })
-    : localPlans.map((localPlan) => ({ localPlan, apiPlan: undefined }))
 
   return (
     <div className='container mx-auto px-4 py-8 max-w-6xl'>
@@ -196,22 +162,15 @@ export function PlansPage() {
       </div>
 
       {/* Plans Grid */}
-      {plansLoading ? (
-        <div className='flex justify-center items-center py-12'>
-          <Loader2 className='h-8 w-8 animate-spin' />
-        </div>
-      ) : (
-        <div className='grid gap-8 md:grid-cols-3 lg:max-w-6xl lg:mx-auto'>
-          {displayPlans.map(({ localPlan }) => (
-            <PlanCard 
-              key={localPlan.id} 
-              plan={localPlan}
-              isCurrentPlan={isCurrentPlan(localPlan.id)}
-              onSubscribe={() => handlePlanSelect(localPlan)}
-            />
-          ))}
-        </div>
-      )}
+      <div className='grid gap-8 md:grid-cols-3 lg:max-w-6xl lg:mx-auto'>
+        {plans.map((plan) => (
+          <PlanCard 
+            key={plan.id} 
+            plan={plan}
+            onSubscribe={() => handlePlanSelect(plan)}
+          />
+        ))}
+      </div>
 
       {/* Lead Dialog */}
       {selectedPlan && (
