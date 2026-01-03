@@ -2,6 +2,8 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import {
   ArrowRight,
+  Globe,
+  Sparkles,
 } from 'lucide-react'
 
 export function Hero() {
@@ -15,29 +17,21 @@ export function Hero() {
 
       <div className='container relative z-10 px-4'>
         <div className='mx-auto max-w-4xl text-center'>
-          {/* Badges */}
+          {/* Badge */}
           <div className='mb-8 flex flex-col items-center gap-4'>
-            <div className='inline-flex items-center gap-2 rounded-full border bg-muted/50 px-4 py-2 text-sm'>
-              <span className='font-medium text-muted-foreground'>
-                Trusted by great teams around the world
-              </span>
+            <div className='group relative inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 px-5 py-2.5 text-sm backdrop-blur-sm transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10'>
+              <div className='flex items-center gap-2'>
+                <div className='relative'>
+                  <Globe className='h-4 w-4 text-primary' />
+                  <Sparkles className='absolute -top-1 -right-1 h-2.5 w-2.5 text-primary animate-pulse' />
+                </div>
+                <span className='font-semibold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent'>
+                  Trusted by great teams around the world
+                </span>
+              </div>
+              {/* Shine effect */}
+              <div className='absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity -translate-x-full group-hover:translate-x-full duration-1000' />
             </div>
-            <a
-              href='https://www.producthunt.com/products/sigryn?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-sigryn'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='transition-opacity hover:opacity-80'
-            >
-              <img
-                alt='Sigryn featured on Product Hunt - Never lose a webhook again'
-                width='250'
-                height='54'
-                src='https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1055854&theme=light&t=1767059159536'
-                className='h-auto w-[250px]'
-                loading='lazy'
-                decoding='async'
-              />
-            </a>
           </div>
 
           {/* Main headline */}
