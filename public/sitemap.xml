@@ -22,28 +22,28 @@
   
   <!-- Blog Posts -->
   <url>
-    <loc>https://sigryn.com/blog/por-que-webhooks-falham-silenciosamente</loc>
+    <loc>https://sigryn.com/blog/why-webhooks-fail-silently</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://sigryn.com/blog/como-debugamos-um-pagamento-que-nunca-virou-pedido</loc>
+    <loc>https://sigryn.com/blog/how-we-debugged-a-payment-that-never-became-an-order</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://sigryn.com/blog/retries-manuais-nao-escalam</loc>
+    <loc>https://sigryn.com/blog/manual-retries-dont-scale</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://sigryn.com/blog/fire-and-forget-e-mentira</loc>
+    <loc>https://sigryn.com/blog/fire-and-forget-is-a-lie</loc>
     <lastmod>2025-01-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

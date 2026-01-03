@@ -16,90 +16,90 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: 'por-que-webhooks-falham-silenciosamente',
-    title: 'Por que webhooks falham silenciosamente',
-    excerpt: 'Webhooks são uma das formas mais comuns de comunicação entre sistemas, mas falham de maneiras que podem passar despercebidas. Entenda os principais motivos e como evitar problemas silenciosos.',
-    content: `# Por que webhooks falham silenciosamente
+    slug: 'why-webhooks-fail-silently',
+    title: 'Why Webhooks Fail Silently',
+    excerpt: 'Webhooks are one of the most common forms of communication between systems, but they fail in ways that can go unnoticed. Understand the main reasons and how to avoid silent problems.',
+    content: `# Why Webhooks Fail Silently
 
-Webhooks são uma das formas mais comuns de comunicação entre sistemas modernos. Eles permitem que aplicações notifiquem outras aplicações sobre eventos em tempo real, sem necessidade de polling constante. No entanto, webhooks têm uma característica perigosa: eles podem falhar silenciosamente, sem que você perceba.
+Webhooks are one of the most common forms of communication between modern systems. They allow applications to notify other applications about events in real-time, without the need for constant polling. However, webhooks have a dangerous characteristic: they can fail silently, without you noticing.
 
-## O problema do "fire and forget"
+## The "fire and forget" problem
 
-A natureza assíncrona dos webhooks significa que, quando você envia uma requisição HTTP, não há garantia de que ela será processada com sucesso. Diferente de uma chamada de API síncrona onde você recebe uma resposta imediata, webhooks são tipicamente enviados e "esquecidos" pelo sistema remetente.
+The asynchronous nature of webhooks means that when you send an HTTP request, there's no guarantee it will be processed successfully. Unlike a synchronous API call where you receive an immediate response, webhooks are typically sent and "forgotten" by the sender system.
 
-### Falhas de rede
+### Network failures
 
-Uma das causas mais comuns de falhas silenciosas são problemas de rede:
+One of the most common causes of silent failures are network problems:
 
-- **Timeouts**: Se o servidor de destino demorar muito para responder, a conexão pode expirar antes de completar
-- **DNS failures**: Problemas de resolução de DNS podem fazer com que a requisição nunca chegue ao destino
-- **Connection drops**: Conexões podem ser interrompidas no meio da transmissão
-- **Firewall blocks**: Regras de firewall podem bloquear requisições sem avisar
+- **Timeouts**: If the destination server takes too long to respond, the connection may expire before completing
+- **DNS failures**: DNS resolution problems can cause the request to never reach its destination
+- **Connection drops**: Connections can be interrupted in the middle of transmission
+- **Firewall blocks**: Firewall rules can block requests without warning
 
-### Problemas no servidor de destino
+### Destination server problems
 
-Mesmo quando a requisição chega ao destino, vários problemas podem ocorrer:
+Even when the request reaches its destination, several problems can occur:
 
-- **Servidor offline**: O servidor pode estar temporariamente indisponível
-- **Overload**: O servidor pode estar sobrecarregado e rejeitar requisições
-- **Erros de processamento**: O servidor pode receber a requisição mas falhar ao processá-la
-- **Validação falha**: O payload pode não passar na validação do servidor
+- **Server offline**: The server may be temporarily unavailable
+- **Overload**: The server may be overloaded and reject requests
+- **Processing errors**: The server may receive the request but fail to process it
+- **Validation failure**: The payload may not pass server validation
 
-### Falhas de autenticação
+### Authentication failures
 
-Webhooks frequentemente usam assinaturas para verificar autenticidade:
+Webhooks frequently use signatures to verify authenticity:
 
-- **Assinaturas inválidas**: Se o algoritmo de hash ou a chave secreta estiver incorreta, o webhook será rejeitado
-- **Tokens expirados**: Tokens de autenticação podem expirar entre o envio e o recebimento
-- **Headers ausentes**: Headers de autenticação podem ser removidos por proxies ou load balancers
+- **Invalid signatures**: If the hash algorithm or secret key is incorrect, the webhook will be rejected
+- **Expired tokens**: Authentication tokens may expire between sending and receiving
+- **Missing headers**: Authentication headers may be removed by proxies or load balancers
 
-## Por que são "silenciosos"?
+## Why are they "silent"?
 
-A maioria dos sistemas de webhook não implementa mecanismos robustos de retry ou notificação de falhas:
+Most webhook systems don't implement robust retry mechanisms or failure notifications:
 
-1. **Sem confirmação de recebimento**: Muitos sistemas não esperam uma resposta HTTP 200 antes de considerar o webhook como entregue
-2. **Falta de retry automático**: Sistemas simples podem tentar apenas uma vez e desistir
-3. **Logs insuficientes**: Falhas podem ocorrer sem deixar rastros adequados
-4. **Sem monitoramento**: Não há alertas quando webhooks falham repetidamente
+1. **No receipt confirmation**: Many systems don't wait for an HTTP 200 response before considering the webhook delivered
+2. **Lack of automatic retry**: Simple systems may try only once and give up
+3. **Insufficient logs**: Failures can occur without leaving adequate traces
+4. **No monitoring**: There are no alerts when webhooks fail repeatedly
 
-## Como evitar falhas silenciosas
+## How to avoid silent failures
 
-### 1. Implementar retry com backoff exponencial
+### 1. Implement retry with exponential backoff
 
-Não tente apenas uma vez. Implemente uma estratégia de retry que:
-- Tenta novamente após intervalos crescentes (1s, 2s, 4s, 8s...)
-- Limita o número máximo de tentativas
-- Para após sucesso ou falha definitiva
+Don't try just once. Implement a retry strategy that:
+- Retries after increasing intervals (1s, 2s, 4s, 8s...)
+- Limits the maximum number of attempts
+- Stops after success or definitive failure
 
-### 2. Validar respostas HTTP
+### 2. Validate HTTP responses
 
-Sempre verifique o código de status HTTP:
-- **2xx**: Sucesso
-- **4xx**: Erro do cliente (não tente novamente com os mesmos dados)
-- **5xx**: Erro do servidor (pode tentar novamente)
+Always check the HTTP status code:
+- **2xx**: Success
+- **4xx**: Client error (don't retry with the same data)
+- **5xx**: Server error (may retry)
 
-### 3. Implementar dead letter queues
+### 3. Implement dead letter queues
 
-Para webhooks que falham repetidamente, armazene em uma fila separada para análise manual ou processamento posterior.
+For webhooks that fail repeatedly, store them in a separate queue for manual analysis or later processing.
 
-### 4. Monitoramento e alertas
+### 4. Monitoring and alerts
 
-Configure alertas para:
-- Taxa de falha acima de um threshold
-- Tempo de resposta aumentando
-- Padrões de falha específicos
+Configure alerts for:
+- Failure rate above a threshold
+- Increasing response time
+- Specific failure patterns
 
-### 5. Assinaturas e validação
+### 5. Signatures and validation
 
-Sempre valide assinaturas de webhooks para garantir autenticidade e integridade dos dados.
+Always validate webhook signatures to ensure authenticity and data integrity.
 
-## Conclusão
+## Conclusion
 
-Webhooks são poderosos, mas sua natureza assíncrona os torna propensos a falhas silenciosas. A chave para evitar problemas é implementar mecanismos robustos de retry, validação, monitoramento e tratamento de erros. Não assuma que "enviado" significa "entregue com sucesso".
+Webhooks are powerful, but their asynchronous nature makes them prone to silent failures. The key to avoiding problems is implementing robust retry, validation, monitoring, and error handling mechanisms. Don't assume that "sent" means "successfully delivered".
 
-Com as ferramentas e práticas corretas, você pode transformar webhooks de um ponto de falha silencioso em um sistema confiável de comunicação entre aplicações.`,
+With the right tools and practices, you can transform webhooks from a silent failure point into a reliable communication system between applications.`,
     author: {
-      name: 'Equipe Sigryn',
+      name: 'Sigryn Team',
       role: 'Engineering Team',
     },
     publishedAt: '2024-01-15',
@@ -108,115 +108,115 @@ Com as ferramentas e práticas corretas, você pode transformar webhooks de um p
     featured: true,
   },
   {
-    slug: 'como-debugamos-um-pagamento-que-nunca-virou-pedido',
-    title: 'Como debugamos um pagamento que nunca virou pedido',
-    excerpt: 'Um caso real de como um webhook perdido causou perda de receita. Aprenda com nossa experiência investigando um pagamento que foi processado mas nunca gerou um pedido no sistema.',
-    content: `# Como debugamos um pagamento que nunca virou pedido
+    slug: 'how-we-debugged-a-payment-that-never-became-an-order',
+    title: 'How We Debugged a Payment That Never Became an Order',
+    excerpt: 'A real case study of how a lost webhook caused revenue loss. Learn from our experience investigating a payment that was processed but never generated an order in the system.',
+    content: `# How We Debugged a Payment That Never Became an Order
 
-Esta é a história de como investigamos e resolvemos um problema crítico: um pagamento foi processado com sucesso, mas o pedido correspondente nunca foi criado no sistema. O culpado? Um webhook que falhou silenciosamente.
+This is the story of how we investigated and resolved a critical problem: a payment was processed successfully, but the corresponding order was never created in the system. The culprit? A webhook that failed silently.
 
-## O problema
+## The problem
 
-Tudo começou quando um cliente relatou que havia feito um pagamento, mas não recebeu confirmação de pedido. Ao investigar, descobrimos que:
+It all started when a customer reported that they had made a payment but didn't receive order confirmation. Upon investigation, we discovered that:
 
-1. O pagamento foi processado com sucesso no gateway de pagamento
-2. O webhook de confirmação foi enviado
-3. Mas o pedido nunca foi criado em nosso sistema
+1. The payment was processed successfully at the payment gateway
+2. The confirmation webhook was sent
+3. But the order was never created in our system
 
-## A investigação
+## The investigation
 
-### Passo 1: Verificar logs do gateway
+### Step 1: Check gateway logs
 
-Primeiro, verificamos os logs do gateway de pagamento. Eles mostravam que:
-- O pagamento foi aprovado
-- O webhook foi enviado para nossa URL
-- O gateway recebeu uma resposta HTTP 200
+First, we checked the payment gateway logs. They showed that:
+- The payment was approved
+- The webhook was sent to our URL
+- The gateway received an HTTP 200 response
 
-Isso era estranho. Se recebemos HTTP 200, por que o pedido não foi criado?
+This was strange. If we received HTTP 200, why wasn't the order created?
 
-### Passo 2: Verificar nossos logs
+### Step 2: Check our logs
 
-Ao verificar nossos logs de aplicação, não encontramos nenhuma entrada para aquele webhook específico. Isso indicava que:
+When checking our application logs, we found no entry for that specific webhook. This indicated that:
 
-- O webhook pode ter sido enviado para o lugar errado
-- Ou foi interceptado antes de chegar à nossa aplicação
-- Ou houve um problema de roteamento
+- The webhook may have been sent to the wrong place
+- Or it was intercepted before reaching our application
+- Or there was a routing problem
 
-### Passo 3: Verificar infraestrutura
+### Step 3: Check infrastructure
 
-Investigamos nossa infraestrutura e descobrimos o problema:
+We investigated our infrastructure and discovered the problem:
 
-**Load balancer estava retornando 200 antes de processar**
+**Load balancer was returning 200 before processing**
 
-Nosso load balancer estava configurado para retornar HTTP 200 imediatamente após receber a requisição, antes mesmo de encaminhá-la para nossa aplicação. Isso significava que:
+Our load balancer was configured to return HTTP 200 immediately after receiving the request, even before forwarding it to our application. This meant that:
 
-1. O gateway de pagamento enviava o webhook
-2. O load balancer recebia e retornava 200
-3. O gateway considerava o webhook como entregue
-4. Mas a requisição nunca chegava à nossa aplicação (ou chegava muito tarde e era descartada)
+1. The payment gateway sent the webhook
+2. The load balancer received it and returned 200
+3. The gateway considered the webhook as delivered
+4. But the request never reached our application (or arrived too late and was discarded)
 
-## O que aprendemos
+## What we learned
 
-### 1. HTTP 200 não significa sucesso
+### 1. HTTP 200 doesn't mean success
 
-Um código HTTP 200 apenas indica que a requisição foi recebida, não que foi processada com sucesso. É crucial verificar se o processamento realmente aconteceu.
+An HTTP 200 code only indicates that the request was received, not that it was processed successfully. It's crucial to verify that processing actually happened.
 
-### 2. Infraestrutura pode mascarar problemas
+### 2. Infrastructure can mask problems
 
-Configurações de infraestrutura (load balancers, proxies, CDNs) podem retornar respostas antes que sua aplicação processe a requisição. Sempre verifique o que está acontecendo em cada camada.
+Infrastructure configurations (load balancers, proxies, CDNs) can return responses before your application processes the request. Always check what's happening at each layer.
 
-### 3. Logs são essenciais
+### 3. Logs are essential
 
-Sem logs adequados em cada etapa do processo, seria impossível rastrear onde o webhook se perdeu. Implemente logging detalhado em:
-- Recebimento do webhook
-- Validação
-- Processamento
-- Persistência
+Without adequate logs at each step of the process, it would be impossible to track where the webhook was lost. Implement detailed logging at:
+- Webhook receipt
+- Validation
+- Processing
+- Persistence
 
-### 4. Idempotência é crucial
+### 4. Idempotency is crucial
 
-Mesmo que o webhook seja processado, você precisa garantir idempotência. Se o mesmo webhook chegar múltiplas vezes (por retry, por exemplo), não deve criar pedidos duplicados.
+Even if the webhook is processed, you need to ensure idempotency. If the same webhook arrives multiple times (due to retry, for example), it shouldn't create duplicate orders.
 
-## A solução
+## The solution
 
-Implementamos várias melhorias:
+We implemented several improvements:
 
-### 1. Validação antes de responder
+### 1. Validation before responding
 
-Agora validamos e processamos o webhook antes de retornar qualquer resposta HTTP. Isso garante que, se retornarmos 200, o processamento realmente aconteceu.
+We now validate and process the webhook before returning any HTTP response. This ensures that if we return 200, processing actually happened.
 
-### 2. Retry com idempotência
+### 2. Retry with idempotency
 
-Implementamos um sistema de retry que:
-- Armazena IDs únicos de webhooks processados
-- Verifica duplicatas antes de processar
-- Retenta apenas em caso de falha real
+We implemented a retry system that:
+- Stores unique IDs of processed webhooks
+- Checks for duplicates before processing
+- Only retries in case of real failure
 
 ### 3. Dead letter queue
 
-Webhooks que falham repetidamente são armazenados em uma fila separada para análise manual e reprocessamento.
+Webhooks that fail repeatedly are stored in a separate queue for manual analysis and reprocessing.
 
-### 4. Monitoramento proativo
+### 4. Proactive monitoring
 
-Configuramos alertas para:
-- Pagamentos sem pedidos correspondentes
-- Webhooks que falham
-- Tempo de processamento aumentando
+We configured alerts for:
+- Payments without corresponding orders
+- Failing webhooks
+- Increasing processing time
 
-## Resultado
+## Result
 
-Após essas mudanças, conseguimos:
-- Reduzir perda de pedidos para zero
-- Identificar e reprocessar pedidos perdidos anteriormente
-- Ter visibilidade completa do fluxo de webhooks
+After these changes, we were able to:
+- Reduce order loss to zero
+- Identify and reprocess previously lost orders
+- Have complete visibility of the webhook flow
 
-## Lições finais
+## Final lessons
 
-Este incidente nos ensinou que webhooks são complexos e requerem atenção cuidadosa em cada etapa. Não assuma que "enviado" ou "recebido" significa "processado com sucesso". Sempre valide, monitore e tenha mecanismos de recuperação.
+This incident taught us that webhooks are complex and require careful attention at every step. Don't assume that "sent" or "received" means "processed successfully". Always validate, monitor, and have recovery mechanisms.
 
-A confiabilidade de webhooks não é um "nice to have" - é essencial para o funcionamento correto do seu negócio.`,
+Webhook reliability is not a "nice to have" - it's essential for the correct operation of your business.`,
     author: {
-      name: 'Equipe Sigryn',
+      name: 'Sigryn Team',
       role: 'Engineering Team',
     },
     publishedAt: '2024-01-22',
@@ -225,141 +225,141 @@ A confiabilidade de webhooks não é um "nice to have" - é essencial para o fun
     featured: true,
   },
   {
-    slug: 'retries-manuais-nao-escalam',
-    title: 'Retries manuais não escalam',
-    excerpt: 'Gerenciar retries de webhooks manualmente pode funcionar em pequena escala, mas rapidamente se torna insustentável. Entenda por que você precisa de uma solução automatizada.',
-    content: `# Retries manuais não escalam
+    slug: 'manual-retries-dont-scale',
+    title: 'Manual Retries Don\'t Scale',
+    excerpt: 'Managing webhook retries manually may work at small scale, but quickly becomes unsustainable. Understand why you need an automated solution.',
+    content: `# Manual Retries Don't Scale
 
-Quando você tem poucos webhooks falhando, pode ser tentador gerenciar retries manualmente. Você verifica os logs, identifica falhas e tenta novamente. Parece simples, mas essa abordagem não escala. Aqui está o porquê.
+When you have few failing webhooks, it can be tempting to manage retries manually. You check the logs, identify failures, and try again. It seems simple, but this approach doesn't scale. Here's why.
 
-## O problema com retries manuais
+## The problem with manual retries
 
-### Volume crescente
+### Growing volume
 
-Conforme seu negócio cresce, o volume de webhooks aumenta exponencialmente. O que funcionava com 10 webhooks por dia não funciona com 10.000:
+As your business grows, webhook volume increases exponentially. What worked with 10 webhooks per day doesn't work with 10,000:
 
-- **Tempo insustentável**: Você não pode verificar manualmente milhares de webhooks
-- **Erro humano**: É fácil perder webhooks importantes em meio ao volume
-- **Priorização difícil**: Como decidir quais webhooks são mais importantes?
+- **Unsustainable time**: You can't manually check thousands of webhooks
+- **Human error**: It's easy to miss important webhooks in the volume
+- **Difficult prioritization**: How do you decide which webhooks are more important?
 
-### Falhas em horários inoportunos
+### Failures at inconvenient times
 
-Webhooks falham a qualquer hora, incluindo:
-- Finais de semana
-- Feriados
-- Madrugadas
-- Durante suas férias
+Webhooks fail at any time, including:
+- Weekends
+- Holidays
+- Early mornings
+- During your vacation
 
-Você não pode estar disponível 24/7 para gerenciar retries manualmente.
+You can't be available 24/7 to manage retries manually.
 
-### Múltiplos tipos de falha
+### Multiple failure types
 
-Nem todas as falhas são iguais. Algumas requerem ação imediata, outras podem esperar:
+Not all failures are equal. Some require immediate action, others can wait:
 
-- **Falhas temporárias**: Problemas de rede que se resolvem sozinhos
-- **Falhas de configuração**: Requerem mudança no código ou configuração
-- **Falhas de dados**: Payloads inválidos que precisam correção
-- **Falhas de infraestrutura**: Problemas no servidor de destino
+- **Temporary failures**: Network problems that resolve themselves
+- **Configuration failures**: Require code or configuration changes
+- **Data failures**: Invalid payloads that need correction
+- **Infrastructure failures**: Problems at the destination server
 
-Gerenciar cada tipo manualmente é ineficiente e propenso a erros.
+Managing each type manually is inefficient and error-prone.
 
-## Por que automação é necessária
+## Why automation is necessary
 
-### 1. Backoff exponencial
+### 1. Exponential backoff
 
-Retries manuais geralmente significam tentar novamente imediatamente ou após um intervalo fixo. Isso pode:
+Manual retries usually mean trying again immediately or after a fixed interval. This can:
 
-- Sobrecarregar servidores já com problemas
-- Gerar rate limiting
-- Não dar tempo suficiente para problemas temporários se resolverem
+- Overload already struggling servers
+- Generate rate limiting
+- Not give enough time for temporary problems to resolve
 
-Uma solução automatizada implementa backoff exponencial:
-- Primeira retry: após 1 segundo
-- Segunda retry: após 2 segundos
-- Terceira retry: após 4 segundos
-- E assim por diante
+An automated solution implements exponential backoff:
+- First retry: after 1 second
+- Second retry: after 2 seconds
+- Third retry: after 4 seconds
+- And so on
 
-Isso dá tempo para problemas temporários se resolverem enquanto evita sobrecarregar o sistema.
+This gives time for temporary problems to resolve while avoiding overloading the system.
 
-### 2. Limites inteligentes
+### 2. Smart limits
 
-Retries manuais podem continuar indefinidamente, desperdiçando recursos. Automação permite:
+Manual retries can continue indefinitely, wasting resources. Automation allows:
 
-- Limitar número máximo de tentativas
-- Parar após sucesso
-- Mover para dead letter queue após falhas definitivas
+- Limiting maximum number of attempts
+- Stopping after success
+- Moving to dead letter queue after definitive failures
 
-### 3. Priorização
+### 3. Prioritization
 
-Nem todos os webhooks são igualmente importantes. Automação permite:
+Not all webhooks are equally important. Automation allows:
 
-- Priorizar webhooks críticos (ex: pagamentos)
-- Processar webhooks menos críticos em segundo plano
-- Ajustar estratégias baseado em tipo de evento
+- Prioritizing critical webhooks (e.g., payments)
+- Processing less critical webhooks in the background
+- Adjusting strategies based on event type
 
-### 4. Visibilidade e métricas
+### 4. Visibility and metrics
 
-Soluções automatizadas fornecem:
+Automated solutions provide:
 
-- Dashboards com taxa de sucesso/falha
-- Alertas quando problemas são detectados
-- Histórico de tentativas e resultados
-- Análise de padrões de falha
+- Dashboards with success/failure rates
+- Alerts when problems are detected
+- History of attempts and results
+- Analysis of failure patterns
 
-## O custo de não automatizar
+## The cost of not automating
 
-### Perda de receita
+### Revenue loss
 
-Webhooks de pagamento que falham e não são retentados resultam em:
-- Pedidos não criados
-- Clientes não notificados
-- Receita perdida
+Payment webhooks that fail and aren't retried result in:
+- Orders not created
+- Customers not notified
+- Lost revenue
 
-### Degradação da experiência do usuário
+### User experience degradation
 
-Webhooks de notificação que falham significam:
-- Usuários não recebem atualizações importantes
-- Status desatualizados
-- Confusão e suporte adicional
+Notification webhooks that fail mean:
+- Users don't receive important updates
+- Outdated status
+- Confusion and additional support
 
-### Carga operacional
+### Operational burden
 
-Gerenciar retries manualmente consome:
-- Tempo da equipe de engenharia
-- Recursos que poderiam ser usados em features
-- Foco que deveria estar em problemas mais importantes
+Managing retries manually consumes:
+- Engineering team time
+- Resources that could be used on features
+- Focus that should be on more important problems
 
-## Quando manual faz sentido
+## When manual makes sense
 
-Retries manuais podem fazer sentido apenas para:
+Manual retries may only make sense for:
 
-- **Debugging**: Quando você está investigando um problema específico
-- **Casos edge**: Situações muito raras que não justificam automação
-- **Testes**: Durante desenvolvimento e testes
+- **Debugging**: When you're investigating a specific problem
+- **Edge cases**: Very rare situations that don't justify automation
+- **Testing**: During development and testing
 
-Mas mesmo nesses casos, uma solução automatizada com capacidade de intervenção manual é preferível.
+But even in these cases, an automated solution with manual intervention capability is preferable.
 
-## Implementando automação
+## Implementing automation
 
-Uma boa solução de retry automatizado deve incluir:
+A good automated retry solution should include:
 
-1. **Múltiplas estratégias de retry**: Backoff exponencial, linear, customizado
-2. **Dead letter queue**: Para webhooks que falham definitivamente
-3. **Idempotência**: Para evitar processamento duplicado
-4. **Monitoramento**: Alertas e métricas em tempo real
-5. **Controle manual**: Capacidade de intervir quando necessário
+1. **Multiple retry strategies**: Exponential backoff, linear, custom
+2. **Dead letter queue**: For webhooks that fail definitively
+3. **Idempotency**: To avoid duplicate processing
+4. **Monitoring**: Real-time alerts and metrics
+5. **Manual control**: Ability to intervene when necessary
 
-## Conclusão
+## Conclusion
 
-Retries manuais podem parecer uma solução rápida, mas não escalam. Conforme seu negócio cresce, você precisa de uma solução automatizada que:
+Manual retries may seem like a quick solution, but they don't scale. As your business grows, you need an automated solution that:
 
-- Gerencie retries de forma inteligente
-- Forneça visibilidade completa
-- Permita foco em problemas que realmente requerem atenção humana
+- Manages retries intelligently
+- Provides complete visibility
+- Allows focus on problems that truly require human attention
 
-Investir em automação de retries não é apenas uma questão de eficiência - é essencial para a confiabilidade e escalabilidade do seu sistema de webhooks.`,
+Investing in retry automation isn't just a matter of efficiency - it's essential for the reliability and scalability of your webhook system.`,
     author: {
-      name: 'Equipe Sigryn',
+      name: 'Sigryn Team',
       role: 'Engineering Team',
     },
     publishedAt: '2024-01-29',
@@ -368,166 +368,166 @@ Investir em automação de retries não é apenas uma questão de eficiência - 
     featured: false,
   },
   {
-    slug: 'fire-and-forget-e-mentira',
-    title: 'Fire and forget é mentira',
-    excerpt: 'A ideia de que você pode simplesmente "enviar e esquecer" webhooks é perigosa. Entenda por que você precisa de garantias de entrega e como implementá-las.',
-    content: `# Fire and forget é mentira
+    slug: 'fire-and-forget-is-a-lie',
+    title: 'Fire and Forget is a Lie',
+    excerpt: 'The idea that you can simply "send and forget" webhooks is dangerous. Understand why you need delivery guarantees and how to implement them.',
+    content: `# Fire and Forget is a Lie
 
-A expressão "fire and forget" sugere que você pode enviar um webhook e simplesmente esquecer dele - assumindo que ele será entregue e processado. Mas isso é uma ilusão perigosa que pode custar caro ao seu negócio.
+The expression "fire and forget" suggests that you can send a webhook and simply forget about it - assuming it will be delivered and processed. But this is a dangerous illusion that can cost your business dearly.
 
-## O que é "fire and forget"?
+## What is "fire and forget"?
 
-"Fire and forget" é uma abordagem onde você:
-1. Envia uma requisição HTTP
-2. Não espera confirmação
-3. Assume que tudo funcionou
-4. Segue em frente
+"Fire and forget" is an approach where you:
+1. Send an HTTP request
+2. Don't wait for confirmation
+3. Assume everything worked
+4. Move on
 
-Essa abordagem parece simples e eficiente, mas na prática, é uma receita para problemas.
+This approach seems simple and efficient, but in practice, it's a recipe for problems.
 
-## Por que "fire and forget" não funciona
+## Why "fire and forget" doesn't work
 
-### 1. Não há garantia de entrega
+### 1. No delivery guarantee
 
-Quando você envia um webhook, várias coisas podem dar errado antes mesmo de chegar ao destino:
+When you send a webhook, several things can go wrong before it even reaches its destination:
 
-- **Falhas de DNS**: O domínio pode não resolver
-- **Timeouts**: A conexão pode expirar
-- **Erros de rede**: Conexões podem ser interrompidas
-- **Firewalls**: Requisições podem ser bloqueadas
+- **DNS failures**: The domain may not resolve
+- **Timeouts**: The connection may expire
+- **Network errors**: Connections can be interrupted
+- **Firewalls**: Requests may be blocked
 
-Sem esperar uma resposta, você nunca saberá se o webhook foi realmente entregue.
+Without waiting for a response, you'll never know if the webhook was actually delivered.
 
-### 2. Não há garantia de processamento
+### 2. No processing guarantee
 
-Mesmo que o webhook chegue ao destino, isso não garante que será processado:
+Even if the webhook reaches its destination, that doesn't guarantee it will be processed:
 
-- **Servidor offline**: O servidor pode estar indisponível
-- **Overload**: O servidor pode estar sobrecarregado
-- **Erros de aplicação**: O processamento pode falhar
-- **Validação falha**: O payload pode ser rejeitado
+- **Server offline**: The server may be unavailable
+- **Overload**: The server may be overloaded
+- **Application errors**: Processing may fail
+- **Validation failure**: The payload may be rejected
 
-Um HTTP 200 não significa que o processamento foi bem-sucedido.
+An HTTP 200 doesn't mean processing was successful.
 
-### 3. Não há visibilidade
+### 3. No visibility
 
-Com "fire and forget", você não tem:
-- Confirmação de que o webhook foi recebido
-- Informação sobre se foi processado
-- Dados sobre tempo de resposta
-- Alertas quando algo dá errado
+With "fire and forget", you don't have:
+- Confirmation that the webhook was received
+- Information about whether it was processed
+- Data about response time
+- Alerts when something goes wrong
 
-Você está operando às cegas.
+You're operating blind.
 
-## O verdadeiro custo
+## The real cost
 
-### Perda de dados críticos
+### Loss of critical data
 
-Webhooks frequentemente carregam informações críticas:
-- **Pagamentos**: Confirmações de transações
-- **Pedidos**: Criação de novos pedidos
-- **Notificações**: Alertas importantes para usuários
-- **Sincronização**: Atualizações de estado entre sistemas
+Webhooks frequently carry critical information:
+- **Payments**: Transaction confirmations
+- **Orders**: Creation of new orders
+- **Notifications**: Important alerts for users
+- **Synchronization**: State updates between systems
 
-Se um webhook falhar silenciosamente, você pode perder dados críticos sem nem saber.
+If a webhook fails silently, you can lose critical data without even knowing it.
 
-### Impacto no negócio
+### Business impact
 
-Falhas silenciosas de webhooks podem resultar em:
-- **Perda de receita**: Pedidos não criados após pagamento
-- **Experiência ruim**: Usuários não recebem notificações
-- **Dados inconsistentes**: Sistemas dessincronizados
-- **Suporte adicional**: Clientes confusos precisando de ajuda
+Silent webhook failures can result in:
+- **Revenue loss**: Orders not created after payment
+- **Poor experience**: Users don't receive notifications
+- **Inconsistent data**: Desynchronized systems
+- **Additional support**: Confused customers needing help
 
-## O que você realmente precisa
+## What you really need
 
-### 1. Confirmação de recebimento
+### 1. Receipt confirmation
 
-Você precisa saber que o webhook foi recebido. Isso significa:
-- Verificar código HTTP de resposta
-- Validar que a resposta indica sucesso
-- Não assumir que "sem erro" significa "sucesso"
+You need to know the webhook was received. This means:
+- Check HTTP response code
+- Validate that the response indicates success
+- Don't assume "no error" means "success"
 
-### 2. Confirmação de processamento
+### 2. Processing confirmation
 
-Receber não é suficiente - você precisa saber que foi processado:
-- Implementar callbacks de confirmação
-- Usar webhooks de status quando disponíveis
-- Validar mudanças de estado esperadas
+Receiving isn't enough - you need to know it was processed:
+- Implement confirmation callbacks
+- Use status webhooks when available
+- Validate expected state changes
 
-### 3. Retry automático
+### 3. Automatic retry
 
-Quando um webhook falha, você precisa tentar novamente:
-- Implementar estratégias de retry inteligentes
-- Usar backoff exponencial
-- Limitar número de tentativas
-- Mover para dead letter queue quando necessário
+When a webhook fails, you need to try again:
+- Implement intelligent retry strategies
+- Use exponential backoff
+- Limit number of attempts
+- Move to dead letter queue when necessary
 
-### 4. Monitoramento e alertas
+### 4. Monitoring and alerts
 
-Você precisa visibilidade:
-- Taxa de sucesso/falha
-- Tempo de resposta
-- Padrões de falha
-- Alertas quando problemas são detectados
+You need visibility:
+- Success/failure rate
+- Response time
+- Failure patterns
+- Alerts when problems are detected
 
 ### 5. Dead letter queue
 
-Para webhooks que falham definitivamente:
-- Armazenar para análise
-- Permitir reprocessamento manual
-- Identificar problemas sistêmicos
+For webhooks that fail definitively:
+- Store for analysis
+- Allow manual reprocessing
+- Identify systemic problems
 
-## Implementando garantias reais
+## Implementing real guarantees
 
-### Estratégia de retry
+### Retry strategy
 
-Implemente uma estratégia robusta:
+Implement a robust strategy:
 \`\`\`
-1. Primeira tentativa: imediata
-2. Segunda tentativa: após 1 segundo
-3. Terceira tentativa: após 2 segundos
-4. Quarta tentativa: após 4 segundos
-5. Quinta tentativa: após 8 segundos
-6. Após 5 falhas: mover para dead letter queue
+1. First attempt: immediate
+2. Second attempt: after 1 second
+3. Third attempt: after 2 seconds
+4. Fourth attempt: after 4 seconds
+5. Fifth attempt: after 8 seconds
+6. After 5 failures: move to dead letter queue
 \`\`\`
 
-### Validação de resposta
+### Response validation
 
-Sempre valide a resposta:
-- **2xx**: Sucesso - marcar como entregue
-- **4xx**: Erro do cliente - não retentar (mesmos dados falharão novamente)
-- **5xx**: Erro do servidor - retentar
-- **Timeout**: Retentar
+Always validate the response:
+- **2xx**: Success - mark as delivered
+- **4xx**: Client error - don't retry (same data will fail again)
+- **5xx**: Server error - retry
+- **Timeout**: Retry
 
-### Idempotência
+### Idempotency
 
-Garanta que reprocessar o mesmo webhook não cause problemas:
-- Use IDs únicos
-- Verifique duplicatas antes de processar
-- Implemente locks quando necessário
+Ensure reprocessing the same webhook doesn't cause problems:
+- Use unique IDs
+- Check for duplicates before processing
+- Implement locks when necessary
 
-### Monitoramento
+### Monitoring
 
-Configure alertas para:
-- Taxa de falha acima de threshold
-- Tempo de resposta aumentando
-- Padrões de falha específicos
-- Dead letter queue crescendo
+Configure alerts for:
+- Failure rate above threshold
+- Increasing response time
+- Specific failure patterns
+- Growing dead letter queue
 
-## Conclusão
+## Conclusion
 
-"Fire and forget" é uma mentira perigosa. Webhooks não são simples requisições HTTP que você pode enviar e esquecer. Eles carregam dados críticos e requerem garantias de entrega e processamento.
+"Fire and forget" is a dangerous lie. Webhooks aren't simple HTTP requests you can send and forget. They carry critical data and require delivery and processing guarantees.
 
-Implementar essas garantias não é opcional - é essencial para:
-- Confiabilidade do sistema
-- Integridade dos dados
-- Experiência do usuário
-- Saúde do negócio
+Implementing these guarantees isn't optional - it's essential for:
+- System reliability
+- Data integrity
+- User experience
+- Business health
 
-Não caia na armadilha de "fire and forget". Invista em garantias reais de entrega e processamento. Seu negócio depende disso.`,
+Don't fall into the "fire and forget" trap. Invest in real delivery and processing guarantees. Your business depends on it.`,
     author: {
-      name: 'Equipe Sigryn',
+      name: 'Sigryn Team',
       role: 'Engineering Team',
     },
     publishedAt: '2024-02-05',

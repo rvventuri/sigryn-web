@@ -25,7 +25,7 @@ function PostCard({ post }: { post: BlogPost }) {
           <div className='flex items-center gap-1.5'>
             <Calendar className='h-4 w-4' />
             <time dateTime={post.publishedAt}>
-              {new Date(post.publishedAt).toLocaleDateString('pt-BR', {
+              {new Date(post.publishedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -34,7 +34,7 @@ function PostCard({ post }: { post: BlogPost }) {
           </div>
           <div className='flex items-center gap-1.5'>
             <Clock className='h-4 w-4' />
-            <span>{post.readTime} min de leitura</span>
+            <span>{post.readTime} min read</span>
           </div>
         </div>
         <div className='flex flex-wrap gap-2 mt-4'>
@@ -48,7 +48,7 @@ function PostCard({ post }: { post: BlogPost }) {
       <CardContent>
         <Link to={`/blog/${post.slug}` as any}>
           <Button variant='ghost' className='w-full group-hover:bg-primary/10'>
-            Ler mais
+            Read more
             <ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
           </Button>
         </Link>
@@ -66,18 +66,18 @@ export function BlogList() {
       {/* Header */}
       <div className='text-center mb-16'>
         <h1 className='text-4xl md:text-5xl font-bold mb-4'>
-          Blog Sigryn
+          Sigryn Blog
         </h1>
         <p className='text-xl text-muted-foreground max-w-2xl mx-auto'>
-          Artigos sobre webhooks, confiabilidade de sistemas e melhores práticas
-          para infraestrutura de eventos
+          Articles about webhooks, system reliability, and best practices
+          for event infrastructure
         </p>
       </div>
 
       {/* Featured Posts */}
       {featuredPosts.length > 0 && (
         <section className='mb-16'>
-          <h2 className='text-2xl font-semibold mb-6'>Artigos em Destaque</h2>
+          <h2 className='text-2xl font-semibold mb-6'>Featured Articles</h2>
           <div className='grid md:grid-cols-2 gap-6'>
             {featuredPosts.map((post) => (
               <PostCard key={post.slug} post={post} />
@@ -88,7 +88,7 @@ export function BlogList() {
 
       {/* All Posts */}
       <section>
-        <h2 className='text-2xl font-semibold mb-6'>Todos os Artigos</h2>
+        <h2 className='text-2xl font-semibold mb-6'>All Articles</h2>
         <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {allPosts.map((post) => (
             <PostCard key={post.slug} post={post} />
