@@ -3,12 +3,12 @@ import { Card, CardContent } from '@/components/ui/card'
 
 export function HowItWorks() {
   return (
-    <section className='py-24 sm:py-32 bg-muted/30'>
+    <section className='py-16 sm:py-20 bg-muted/30'>
       <div className='container px-4'>
         <div className='mx-auto max-w-4xl'>
           {/* Header */}
-          <div className='text-center mb-16'>
-            <h2 className='text-4xl font-bold tracking-tight sm:text-5xl mb-4'>
+          <div className='text-center mb-10'>
+            <h2 className='text-4xl font-bold tracking-tight sm:text-5xl mb-3'>
               How Sigryn works
             </h2>
             <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
@@ -17,7 +17,7 @@ export function HowItWorks() {
           </div>
 
           {/* Flow Diagram */}
-          <div className='mb-12'>
+          <div className='mb-8'>
             <div className='flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8'>
               {/* Providers Box */}
               <Card className='flex-1 max-w-[280px] border-2 hover:shadow-lg transition-shadow'>
@@ -30,7 +30,7 @@ export function HowItWorks() {
               </Card>
 
               {/* Arrow */}
-              <ArrowRight className='h-8 w-8 text-primary flex-shrink-0 rotate-90 md:rotate-0' />
+              <ArrowRight className='h-8 w-8 md:h-10 md:w-10 text-primary flex-shrink-0 rotate-90 md:rotate-0' />
 
               {/* Sigryn Box */}
               <Card className='flex-1 max-w-[280px] border-2 border-primary shadow-lg hover:shadow-xl transition-shadow relative'>
@@ -40,6 +40,13 @@ export function HowItWorks() {
                   </span>
                 </div>
                 <CardContent className='p-6 text-center pt-8'>
+                  <div className='flex justify-center mb-3'>
+                    <img
+                      src='/images/sigryn_logo.png'
+                      alt='Sigryn Logo'
+                      className='h-12 w-auto'
+                    />
+                  </div>
                   <h3 className='text-xl font-semibold mb-2'>Sigryn</h3>
                   <p className='text-sm text-muted-foreground'>
                     Store, validate, track
@@ -48,7 +55,7 @@ export function HowItWorks() {
               </Card>
 
               {/* Arrow */}
-              <ArrowRight className='h-8 w-8 text-primary flex-shrink-0 rotate-90 md:rotate-0' />
+              <ArrowRight className='h-8 w-8 md:h-10 md:w-10 text-primary flex-shrink-0 rotate-90 md:rotate-0' />
 
               {/* Your App Box */}
               <Card className='flex-1 max-w-[280px] border-2 hover:shadow-lg transition-shadow'>

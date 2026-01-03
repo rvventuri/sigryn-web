@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Webhook, Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import { Github, Twitter, Linkedin, Mail } from 'lucide-react'
 
 const footerLinks = {
   Product: [
@@ -45,11 +45,12 @@ export function Footer() {
         <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-6'>
           {/* Brand */}
           <div className='lg:col-span-2'>
-            <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground'>
-                <Webhook className='h-5 w-5' />
-              </div>
-              <span className='text-xl font-bold'>Sigryn</span>
+            <Link to='/' className='flex items-center mb-4'>
+              <img
+                src='/images/sigryn_logo.png'
+                alt='Sigryn Logo'
+                className='h-8 w-auto'
+              />
             </Link>
             <p className='text-sm text-muted-foreground mb-4 max-w-sm'>
               The control layer for reliable event delivery. Sigryn processes signals, validates signatures, and guarantees event delivery at scale.

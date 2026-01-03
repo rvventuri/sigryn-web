@@ -10,7 +10,6 @@ import {
 import { sidebarData } from './data/sidebar-data'
 import { NavGroup } from './nav-group'
 import { NavUser } from './nav-user'
-import { Webhook } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import {
   SidebarMenu,
@@ -37,13 +36,12 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size='lg' asChild>
-              <Link to='/dashboard' className='flex items-center gap-2'>
-                <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground'>
-                  <Webhook className='size-4' />
-                </div>
-                <div className='flex flex-col items-start text-left text-sm leading-tight'>
-                  <span className='truncate font-semibold'>Sigryn</span>
-                </div>
+              <Link to='/dashboard' className='flex items-center'>
+                <img
+                  src='/images/sigryn_logo.png'
+                  alt='Sigryn Logo'
+                  className='h-8 w-auto'
+                />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

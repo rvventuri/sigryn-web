@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { Webhook } from 'lucide-react'
 
 type AuthLayoutProps = {
   children: React.ReactNode
@@ -11,11 +10,12 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       {/* Navbar */}
       <nav className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
         <div className='container flex h-16 items-center justify-between px-4'>
-          <Link to='/' className='flex items-center space-x-2'>
-            <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground'>
-              <Webhook className='h-5 w-5' />
-            </div>
-            <span className='text-xl font-bold'>Sigryn</span>
+          <Link to='/' className='flex items-center'>
+            <img
+              src='/images/sigryn_logo.png'
+              alt='Sigryn Logo'
+              className='h-8 w-auto'
+            />
           </Link>
         </div>
       </nav>
