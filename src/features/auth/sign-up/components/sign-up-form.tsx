@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { GoogleAuthButton } from '@/components/google-auth-button'
 import { Separator } from '@/components/ui/separator'
+import { authEvents } from '@/lib/analytics'
 
 const formSchema = z
   .object({
@@ -62,6 +63,7 @@ export function SignUpForm({
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
+    authEvents.signUpStart('email')
 
     try {
       const response = await authApi.register({
@@ -75,6 +77,9 @@ export function SignUpForm({
       auth.setUser(response.user)
       auth.setAccessToken(response.access_token)
 
+      // Track success
+      authEvents.signUpSuccess('email')
+
       // Redirect to dashboard
       navigate({ to: '/dashboard', replace: true })
 
@@ -85,8 +90,10 @@ export function SignUpForm({
         const apiError = error.response?.data as ApiError | undefined
         const errorMessage =
           apiError?.message || 'An error occurred. Please try again.'
+        authEvents.signUpError('email', errorMessage)
         toast.error(errorMessage)
       } else {
+        authEvents.signUpError('email', 'Unknown error')
         toast.error('An error occurred. Please try again.')
       }
     }

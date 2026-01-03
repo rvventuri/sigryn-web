@@ -5,6 +5,7 @@ import {
   Globe,
   Sparkles,
 } from 'lucide-react'
+import { landingEvents } from '@/lib/analytics'
 
 export function Hero() {
   return (
@@ -60,7 +61,7 @@ export function Hero() {
 
           {/* CTA Buttons */}
           <div className='mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row'>
-            <Link to='/sign-up'>
+            <Link to='/sign-up' onClick={landingEvents.heroCtaClick}>
               <Button size='lg' className='group text-lg px-8 py-6 h-auto'>
                 Start for free
                 <ArrowRight className='ml-2 h-5 w-5 transition-transform group-hover:translate-x-1' />
@@ -70,6 +71,7 @@ export function Hero() {
               href='#'
               target='_blank'
               rel='noopener noreferrer'
+              onClick={landingEvents.heroDocsClick}
             >
               <Button
                 size='lg'

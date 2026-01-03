@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Calendar, Clock, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import { getPostBySlug, getAllPosts, type BlogPost } from '../data/posts'
+import { blogEvents } from '@/lib/analytics'
 
 function formatMarkdown(content: string): React.ReactNode[] {
   // Simple markdown to JSX converter
@@ -187,6 +188,10 @@ export function BlogPost({ slug }: { slug: string }) {
 
   const content = formatMarkdown(post.content)
 
+  useEffect(() => {
+    blogEvents.postView(slug, post.title)
+  }, [slug, post.title])
+
   return (
     <article className='container mx-auto px-4 py-16 max-w-4xl'>
       {/* Back button */}
@@ -259,13 +264,19 @@ export function BlogPost({ slug }: { slug: string }) {
               Try Sigryn for free and see how we can help you avoid silent failures, implement automatic retries, and have complete visibility of your webhooks.
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center pt-4'>
-              <Link to='/sign-up'>
+              <Link 
+                to='/sign-up'
+                onClick={() => blogEvents.postCtaClick(slug, 'signup')}
+              >
                 <Button size='lg' className='w-full sm:w-auto'>
                   Create free account
                   <ArrowRight className='ml-2 h-4 w-4' />
                 </Button>
               </Link>
-              <Link to='/sign-in'>
+              <Link 
+                to='/sign-in'
+                onClick={() => blogEvents.postCtaClick(slug, 'signin')}
+              >
                 <Button variant='outline' size='lg' className='w-full sm:w-auto'>
                   I already have an account
                 </Button>
@@ -283,7 +294,10 @@ export function BlogPost({ slug }: { slug: string }) {
       {/* Navigation */}
       <nav className='flex justify-between items-center gap-4'>
         {prevPost ? (
-          <Link to={`/blog/${prevPost.slug}` as any}>
+          <Link 
+            to={`/blog/${prevPost.slug}` as any}
+            onClick={() => blogEvents.postNavigationClick('previous', prevPost.slug)}
+          >
             <div className='text-left'>
               <div className='text-sm text-muted-foreground mb-1'>Previous article</div>
               <div className='font-medium hover:text-primary transition-colors'>
@@ -296,7 +310,10 @@ export function BlogPost({ slug }: { slug: string }) {
         )}
 
         {nextPost ? (
-          <Link to={`/blog/${nextPost.slug}` as any}>
+          <Link 
+            to={`/blog/${nextPost.slug}` as any}
+            onClick={() => blogEvents.postNavigationClick('next', nextPost.slug)}
+          >
             <div className='text-right'>
               <div className='text-sm text-muted-foreground mb-1'>Next article</div>
               <div className='font-medium hover:text-primary transition-colors'>

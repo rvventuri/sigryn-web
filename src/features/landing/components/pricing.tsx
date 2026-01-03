@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Check, Sparkles, Rocket, Crown } from 'lucide-react'
+import { useEffect } from 'react'
+import { landingEvents } from '@/lib/analytics'
 
 const plans = [
   {
@@ -70,6 +72,10 @@ const plans = [
 ]
 
 export function Pricing() {
+  useEffect(() => {
+    landingEvents.pricingView()
+  }, [])
+
   return (
     <section className='py-24 sm:py-32 bg-muted/30'>
       <div className='container px-4'>
@@ -138,6 +144,7 @@ export function Pricing() {
                   <Link
                     to='/sign-up'
                     className='block'
+                    onClick={() => landingEvents.pricingPlanClick(plan.name)}
                   >
                     <Button
                       className='w-full'
