@@ -2,9 +2,65 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Copy, Check } from 'lucide-react'
+import { Copy, Check, RotateCw, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import type { WebhookRequest } from '@/lib/dashboard-api'
+import { webhooksRetryApi } from '@/lib/webhooks-retry-api'
+import { useQueryClient } from '@tanstack/react-query'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
+function RetryForwardButton({ forwardId }: { forwardId: string }) {
+  const [isRetrying, setIsRetrying] = useState(false)
+  const queryClient = useQueryClient()
+
+  const handleRetry = async () => {
+    setIsRetrying(true)
+    try {
+      await webhooksRetryApi.retryForward(forwardId)
+      toast.success('Forward retry initiated successfully')
+      // Invalidate queries to refresh data
+      await queryClient.invalidateQueries({ queryKey: ['webhook-requests'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['dashboard-recent-webhooks'],
+      })
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to retry forward'
+      toast.error(errorMessage)
+    } finally {
+      setIsRetrying(false)
+    }
+  }
+
+  return (
+    <Button
+      variant='outline'
+      size='sm'
+      className='mt-2'
+      onClick={handleRetry}
+      disabled={isRetrying}
+    >
+      {isRetrying ? (
+        <>
+          <Loader2 className='mr-2 h-3 w-3 animate-spin' />
+          Retrying...
+        </>
+      ) : (
+        <>
+          <RotateCw className='mr-2 h-3 w-3' />
+          Retry Forward
+        </>
+      )}
+    </Button>
+  )
+}
 
 interface WebhookDetailsProps {
   webhook: WebhookRequest
@@ -12,6 +68,37 @@ interface WebhookDetailsProps {
 
 export function WebhookDetails({ webhook }: WebhookDetailsProps) {
   const [copied, setCopied] = useState<string | null>(null)
+  const [isRetrying, setIsRetrying] = useState(false)
+  const queryClient = useQueryClient()
+
+  const handleRetry = async (onlyFailed: boolean = false) => {
+    setIsRetrying(true)
+    try {
+      const response = await webhooksRetryApi.retryWebhookRequest(
+        webhook.id,
+        { onlyFailed }
+      )
+      toast.success(
+        `Retry initiated. ${response.forwardsCreated} forward(s) created.`
+      )
+      // Invalidate queries to refresh data
+      await queryClient.invalidateQueries({ queryKey: ['webhook-requests'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['dashboard-recent-webhooks'],
+      })
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to retry webhook request'
+      toast.error(errorMessage)
+    } finally {
+      setIsRetrying(false)
+    }
+  }
+
+  const hasFailedForwards =
+    webhook.forwards?.some((f) => f.status === 'failed') || false
 
   const copyToClipboard = async (text: string, label: string) => {
     await navigator.clipboard.writeText(text)
@@ -60,6 +147,40 @@ export function WebhookDetails({ webhook }: WebhookDetailsProps) {
 
   return (
     <div className='space-y-4 p-4 bg-muted/50 border-t'>
+      {/* Retry Actions */}
+      <div className='flex items-center justify-between pb-2 border-b'>
+        <h4 className='text-sm font-semibold'>Actions</h4>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='outline' size='sm' disabled={isRetrying}>
+              {isRetrying ? (
+                <>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  Retrying...
+                </>
+              ) : (
+                <>
+                  <RotateCw className='mr-2 h-4 w-4' />
+                  Retry
+                </>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end'>
+            <DropdownMenuItem onClick={() => handleRetry(false)}>
+              <RotateCw className='mr-2 h-4 w-4' />
+              Retry All Endpoints
+            </DropdownMenuItem>
+            {hasFailedForwards && (
+              <DropdownMenuItem onClick={() => handleRetry(true)}>
+                <RotateCw className='mr-2 h-4 w-4' />
+                Retry Failed Only
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       <div className='grid gap-4 md:grid-cols-2'>
         {/* Basic Info */}
         <div className='space-y-2'>
@@ -287,6 +408,9 @@ export function WebhookDetails({ webhook }: WebhookDetailsProps) {
                     <div className='mt-2 text-xs text-red-600 dark:text-red-400'>
                       Error: {forward.errorMessage}
                     </div>
+                  )}
+                  {forward.status === 'failed' && (
+                    <RetryForwardButton forwardId={forward.id} />
                   )}
                 </div>
               ))}

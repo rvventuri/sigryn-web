@@ -1,9 +1,80 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, RotateCw, Loader2 } from 'lucide-react'
 import type { WebhookRequest } from '@/lib/dashboard-api'
 import { Link } from '@tanstack/react-router'
+import { webhooksRetryApi } from '@/lib/webhooks-retry-api'
+import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { MoreHorizontal } from 'lucide-react'
+
+function RetryWebhookButton({ webhookRequest }: { webhookRequest: WebhookRequest }) {
+  const [isLoading, setIsLoading] = useState(false)
+  const queryClient = useQueryClient()
+
+  const handleRetry = async (onlyFailed: boolean = false) => {
+    setIsLoading(true)
+    try {
+      const response = await webhooksRetryApi.retryWebhookRequest(
+        webhookRequest.id,
+        { onlyFailed }
+      )
+      toast.success(
+        `Retry initiated. ${response.forwardsCreated} forward(s) created.`
+      )
+      // Invalidate queries to refresh data
+      await queryClient.invalidateQueries({ queryKey: ['webhook-requests'] })
+      await queryClient.invalidateQueries({
+        queryKey: ['dashboard-recent-webhooks'],
+      })
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to retry webhook request'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const hasFailedForwards =
+    webhookRequest.forwards?.some((f) => f.status === 'failed') || false
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' size='icon' className='h-8 w-8' disabled={isLoading}>
+          {isLoading ? (
+            <Loader2 className='h-4 w-4 animate-spin' />
+          ) : (
+            <MoreHorizontal className='h-4 w-4' />
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuItem onClick={() => handleRetry(false)}>
+          <RotateCw className='mr-2 h-4 w-4' />
+          Retry All Endpoints
+        </DropdownMenuItem>
+        {hasFailedForwards && (
+          <DropdownMenuItem onClick={() => handleRetry(true)}>
+            <RotateCw className='mr-2 h-4 w-4' />
+            Retry Failed Only
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 export const webhookRequestsColumns: ColumnDef<WebhookRequest>[] = [
   {
@@ -140,6 +211,14 @@ export const webhookRequestsColumns: ColumnDef<WebhookRequest>[] = [
       }
       return <span className='text-sm'>{time}ms</span>
     },
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      return <RetryWebhookButton webhookRequest={row.original} />
+    },
+    enableSorting: false,
   },
 ]
 
