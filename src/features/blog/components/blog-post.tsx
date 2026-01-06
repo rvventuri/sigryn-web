@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { Card, CardContent } from '@/components/ui/card'
 import { getPostBySlug, getAllPosts, type BlogPost } from '../data/posts'
 import { blogEvents } from '@/lib/analytics'
+import { BlogStructuredData } from './blog-structured-data'
 
 function formatMarkdown(content: string): React.ReactNode[] {
   // Simple markdown to JSX converter
@@ -193,7 +194,9 @@ export function BlogPost({ slug }: { slug: string }) {
   }, [slug, post.title])
 
   return (
-    <article className='container mx-auto px-4 py-16 max-w-4xl'>
+    <>
+      <BlogStructuredData post={post} />
+      <article className='container mx-auto px-4 py-16 max-w-4xl'>
       {/* Back button */}
       <Link to={'/blog' as any}>
         <Button variant='ghost' className='mb-8'>
@@ -326,6 +329,7 @@ export function BlogPost({ slug }: { slug: string }) {
         )}
       </nav>
     </article>
+    </>
   )
 }
 

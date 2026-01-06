@@ -77,7 +77,7 @@ export function Pricing() {
   }, [])
 
   return (
-    <section className='py-24 sm:py-32 bg-muted/30'>
+    <section id='pricing' className='py-24 sm:py-32 bg-muted/30'>
       <div className='container px-4'>
         {/* Header */}
         <header className='mx-auto max-w-2xl text-center mb-16'>

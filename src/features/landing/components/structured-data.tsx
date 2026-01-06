@@ -12,7 +12,7 @@ export function StructuredData() {
     name: 'Sigryn',
     url: baseUrl,
     logo: `${baseUrl}/images/favicon.svg`,
-    description: 'The control layer for reliable event delivery. Sigryn processes signals, validates signatures, and guarantees every event reaches its destination.',
+    description: 'Webhook reliability and observability platform. Never lose a webhook again with complete delivery history, automatic retries, and real-time monitoring.',
     sameAs: [
       'https://www.producthunt.com/products/sigryn',
       // Add other social media links here
@@ -22,6 +22,14 @@ export function StructuredData() {
       contactType: 'Customer Service',
       url: baseUrl,
     },
+    foundingDate: '2024',
+    knowsAbout: [
+      'Webhook Infrastructure',
+      'Event Delivery',
+      'API Integration',
+      'Webhook Monitoring',
+      'Webhook Reliability',
+    ],
   }
 
   // SoftwareApplication Schema
@@ -42,17 +50,20 @@ export function StructuredData() {
       ratingValue: '5',
       ratingCount: '1',
     },
-    description: 'Sigryn is the control layer for reliable event delivery. Process webhooks, validate signatures, queue events, and guarantee delivery with enterprise-grade reliability.',
+    description: 'Webhook reliability and observability platform. Solve silent webhook failures with complete delivery history, automatic retries with exponential backoff, signature validation, and real-time alerts.',
     featureList: [
-      'Webhook queueing and retry',
-      'Event delivery guarantee',
-      'Signature validation',
+      'Complete webhook delivery history',
+      'Automatic retry with exponential backoff',
+      'Webhook replay and manual retry',
+      'Signature validation (HMAC)',
+      'Real-time monitoring and alerts',
       'Multi-destination routing',
-      'Real-time monitoring',
-      'Event replay',
-      'Local development support',
-      'Infrastructure as code',
+      'Webhook observability dashboard',
+      'Slack and email notifications',
+      'Dead letter queue for failed webhooks',
+      'Zero infrastructure required',
     ],
+    keywords: 'webhook reliability, webhook observability, webhook monitoring, webhook retry, webhook delivery',
   }
 
   // WebSite Schema
@@ -61,7 +72,7 @@ export function StructuredData() {
     '@type': 'WebSite',
     name: 'Sigryn',
     url: baseUrl,
-    description: 'The control layer for reliable event delivery. Never lose a webhook again.',
+    description: 'Webhook reliability and observability platform. Never lose a webhook again with complete delivery history, automatic retries, and real-time monitoring.',
     publisher: {
       '@type': 'Organization',
       name: 'Sigryn',
@@ -73,6 +84,11 @@ export function StructuredData() {
         urlTemplate: `${baseUrl}/search?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
+    },
+    mainEntity: {
+      '@type': 'SoftwareApplication',
+      name: 'Sigryn',
+      applicationCategory: 'DeveloperApplication',
     },
   }
 

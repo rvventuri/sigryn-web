@@ -4,26 +4,26 @@ import { LandingPage } from '@/features/landing'
 export const Route = createFileRoute('/')({
   component: LandingPage,
   head: () => ({
-    title: 'Sigryn - Never Lose a Webhook Again | Reliable Event Delivery Infrastructure',
+    title: 'Sigryn - Never Lose a Webhook Again | Webhook Reliability & Observability Platform',
     meta: [
       {
         name: 'description',
         content:
-          'Sigryn is the control layer for reliable event delivery. Process webhooks, validate signatures, queue events, and guarantee delivery with enterprise-grade reliability. Zero infrastructure needed.',
+          'Webhooks fail silently in production. Providers say "delivered" but nothing reaches your system. Sigryn provides complete webhook observability, automatic retries, and delivery guarantees. Built for developers who can\'t afford to lose events.',
       },
       {
         name: 'keywords',
         content:
-          'webhook, webhooks, event delivery, webhook infrastructure, webhook management, webhook queue, webhook retry, webhook monitoring, event-driven architecture, webhook reliability, webhook delivery, webhook routing, webhook transformation, webhook debugging, webhook observability, API webhooks, webhook service, webhook platform',
+          'webhook reliability, webhook observability, webhook monitoring, webhook retry, webhook delivery, webhook infrastructure, webhook debugging, webhook history, webhook replay, webhook alerts, webhook management, event delivery, webhook failures, webhook tracking, webhook queue, webhook platform, webhook service, API webhooks, webhook debugging tools, webhook monitoring tools',
       },
       {
         property: 'og:title',
-        content: 'Sigryn - Never Lose a Webhook Again | Reliable Event Delivery Infrastructure',
+        content: 'Sigryn - Never Lose a Webhook Again | Webhook Reliability & Observability',
       },
       {
         property: 'og:description',
         content:
-          'Sigryn is the control layer for reliable event delivery. Process webhooks, validate signatures, queue events, and guarantee delivery with enterprise-grade reliability. Zero infrastructure needed.',
+          'Webhooks fail silently in production. Providers say "delivered" but nothing reaches your system. Sigryn provides complete webhook observability, automatic retries, and delivery guarantees.',
       },
       {
         property: 'og:type',
@@ -43,12 +43,12 @@ export const Route = createFileRoute('/')({
       },
       {
         name: 'twitter:title',
-        content: 'Sigryn - Never Lose a Webhook Again | Reliable Event Delivery Infrastructure',
+        content: 'Sigryn - Never Lose a Webhook Again | Webhook Reliability Platform',
       },
       {
         name: 'twitter:description',
         content:
-          'Sigryn is the control layer for reliable event delivery. Process webhooks, validate signatures, queue events, and guarantee delivery with enterprise-grade reliability.',
+          'Webhooks fail silently in production. Sigryn provides complete webhook observability, automatic retries, and delivery guarantees. Built for developers.',
       },
       {
         name: 'twitter:image',
@@ -57,6 +57,10 @@ export const Route = createFileRoute('/')({
       {
         name: 'robots',
         content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      },
+      {
+        name: 'article:author',
+        content: 'Sigryn Team',
       },
     ],
     links: [

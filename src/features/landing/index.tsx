@@ -1,8 +1,7 @@
-import { Hero } from './components/hero'
-import { HowItWorks } from './components/how-it-works'
-import { Features } from './components/features'
-import { Benefits } from './components/benefits'
-import { SocialProof } from './components/social-proof'
+import { HeroPain } from './components/hero-pain'
+import { SolutionHero } from './components/solution-hero'
+import { FeaturesTech } from './components/features-tech'
+import { HowItWorksTech } from './components/how-it-works-tech'
 import { Pricing } from './components/pricing'
 import { Footer } from './components/footer'
 import { Navbar } from './components/navbar'
@@ -15,11 +14,10 @@ export function LandingPage() {
       <div className='flex min-h-screen flex-col bg-background'>
         <Navbar />
         <main className='flex-1'>
-          <Hero />
-          <HowItWorks />
-          <Features />
-          <Benefits />
-          <SocialProof />
+          <HeroPain />
+          <SolutionHero />
+          <FeaturesTech />
+          <HowItWorksTech />
           <Pricing />
         </main>
         <Footer />

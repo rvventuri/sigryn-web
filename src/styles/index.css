@@ -104,6 +104,66 @@
   }
 }
 
+/* Grid movement animation */
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Fade in with slide up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse glow effect */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(var(--primary), 0);
+  }
+}
+
+/* Terminal typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Code highlight animation */
+@keyframes highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(var(--primary), 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Animated grid background */
+.animated-grid {
+  animation: gridMove 20s linear infinite;
+}
+
 @keyframes flow-vertical {
   0% {
     transform: translateY(-8px);
