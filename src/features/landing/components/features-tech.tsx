@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react'
 import {
   History,
-  Code,
-  Clock,
-  Search,
   RotateCcw,
   Bell,
-  Mail,
   BarChart3,
   Eye,
   Shield,
-  Zap,
 } from 'lucide-react'
 
 const features = [
