@@ -49,5 +49,54 @@
     <priority>0.7</priority>
   </url>
   
+  <url>
+    <loc>https://sigryn.com/blog/hidden-costs-building-webhook-infrastructure</loc>
+    <lastmod>2024-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/cost-intelligent-retry-mechanisms-webhooks</loc>
+    <lastmod>2024-02-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/cost-webhook-observability-monitoring</loc>
+    <lastmod>2024-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/cost-webhook-security-authentication</loc>
+    <lastmod>2024-03-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/cost-webhook-queuing-concurrency</loc>
+    <lastmod>2024-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/cost-maintaining-webhook-systems</loc>
+    <lastmod>2024-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://sigryn.com/blog/build-vs-buy-webhook-infrastructure</loc>
+    <lastmod>2024-03-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
 </urlset>
 
