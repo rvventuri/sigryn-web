@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { Github, Twitter, Linkedin, Mail } from 'lucide-react'
+import { SigrynLogo } from '@/assets/sigryn-logo'
 
 const footerLinks = {
   Product: [
@@ -46,11 +47,7 @@ export function Footer() {
           {/* Brand */}
           <div className='lg:col-span-2'>
             <Link to='/' className='flex items-center mb-4'>
-              <img
-                src='/images/sigryn_logo.png'
-                alt='Sigryn Logo'
-                className='h-8 w-auto'
-              />
+              <SigrynLogo className='h-8 w-auto' />
             </Link>
             <p className='text-sm text-muted-foreground mb-4 max-w-sm'>
               The control layer for reliable event delivery. Sigryn processes signals, validates signatures, and guarantees event delivery at scale.

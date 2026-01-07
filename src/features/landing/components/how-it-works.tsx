@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { SigrynLogoIcon } from '@/assets/sigryn-logo'
 
 export function HowItWorks() {
   return (
@@ -41,11 +42,7 @@ export function HowItWorks() {
                 </div>
                 <CardContent className='p-6 text-center pt-8'>
                   <div className='flex justify-center mb-3'>
-                    <img
-                      src='/images/sigryn_logo.png'
-                      alt='Sigryn Logo'
-                      className='h-12 w-auto'
-                    />
+                    <SigrynLogoIcon className='h-12 w-12' />
                   </div>
                   <h3 className='text-xl font-semibold mb-2'>Sigryn</h3>
                   <p className='text-sm text-muted-foreground'>

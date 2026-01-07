@@ -16,6 +16,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { SigrynLogo } from '@/assets/sigryn-logo'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
@@ -37,11 +38,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size='lg' asChild>
               <Link to='/dashboard' className='flex items-center'>
-                <img
-                  src='/images/sigryn_logo.png'
-                  alt='Sigryn Logo'
-                  className='h-8 w-auto'
-                />
+                <SigrynLogo className='h-8 w-auto' />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

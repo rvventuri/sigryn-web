@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect } from 'react'
 import { landingEvents } from '@/lib/analytics'
+import { SigrynLogo } from '@/assets/sigryn-logo'
 
 const sections = [
   { id: 'problem', label: 'The Problem' },
@@ -54,14 +55,7 @@ export function Navbar() {
     >
       <div className='container flex h-16 items-center justify-between px-4'>
         <Link to='/' className='flex items-center'>
-          <img
-            src='/images/sigryn_logo.png'
-            alt='Sigryn - Webhook Reliability Platform'
-            className='h-10 w-auto transition-transform hover:scale-105'
-            width='120'
-            height='40'
-            loading='eager'
-          />
+          <SigrynLogo className='h-10 w-auto transition-transform hover:scale-105' />
         </Link>
         
         <div className='hidden md:flex items-center gap-1'>

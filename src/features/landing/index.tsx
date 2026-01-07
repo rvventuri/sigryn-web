@@ -2,6 +2,7 @@ import { HeroPain } from './components/hero-pain'
 import { SolutionHero } from './components/solution-hero'
 import { FeaturesTech } from './components/features-tech'
 import { HowItWorksTech } from './components/how-it-works-tech'
+import { SocialProof } from './components/social-proof'
 import { Pricing } from './components/pricing'
 import { Footer } from './components/footer'
 import { Navbar } from './components/navbar'
@@ -18,6 +19,7 @@ export function LandingPage() {
           <SolutionHero />
           <FeaturesTech />
           <HowItWorksTech />
+          <SocialProof />
           <Pricing />
         </main>
         <Footer />
