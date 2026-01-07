@@ -1,30 +1,27 @@
-import { HeroPain } from './components/hero-pain'
-import { SolutionHero } from './components/solution-hero'
-import { FeaturesTech } from './components/features-tech'
-import { HowItWorksTech } from './components/how-it-works-tech'
-import { SocialProof } from './components/social-proof'
-import { Pricing } from './components/pricing'
-import { Footer } from './components/footer'
-import { Navbar } from './components/navbar'
+import { HeroSection } from './components/hero-section'
+import { ProblemSection } from './components/problem-section'
+import { SolutionSection } from './components/solution-section'
+import { FeaturesGridSection } from './components/features-grid-section'
+import { CtaSection } from './components/cta-section'
+import { MinimalNavbar } from './components/minimal-navbar'
+import { MinimalFooter } from './components/minimal-footer'
 import { StructuredData } from './components/structured-data'
 
 export function LandingPage() {
   return (
     <>
       <StructuredData />
-      <div className='flex min-h-screen flex-col bg-background'>
-        <Navbar />
+      <div className='flex min-h-screen flex-col bg-white'>
+        <MinimalNavbar />
         <main className='flex-1'>
-          <HeroPain />
-          <SolutionHero />
-          <FeaturesTech />
-          <HowItWorksTech />
-          <SocialProof />
-          <Pricing />
+          <HeroSection />
+          <ProblemSection />
+          <SolutionSection />
+          <FeaturesGridSection />
+          <CtaSection />
         </main>
-        <Footer />
+        <MinimalFooter />
       </div>
     </>
   )
 }
-
